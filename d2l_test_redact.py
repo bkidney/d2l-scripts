@@ -60,7 +60,6 @@ def main():
 
 	# replace it with name of the pdf file
 	args = docopt(usage)
-	print(args)
 
 	files = []
 	if args["-d"] or args["--dir"]:
