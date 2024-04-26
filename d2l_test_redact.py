@@ -27,11 +27,12 @@ class Redactor:
 	def redaction(self):
 	
 		doc = fitz.open(self.path)
-		
+		redacted = False
 		for page in doc:
 			# getting boxes which contain regex matches
 			redactions = self.get_redact_data(page.get_text().split('\n'))
 			for data in redactions:
+				redacted = True
 				areas = page.search_for(data)
 				
 				# Mark redaction areas
@@ -42,8 +43,11 @@ class Redactor:
 			
 		extension_idx = self.path.rfind(".")
 		redacted_filename = self.path[:extension_idx] + "-redacted" + self.path[extension_idx:]
-		doc.save(redacted_filename)
-		print("Successfully redacted")
+		if redacted:
+			doc.save(redacted_filename)
+
+		return redacted
+		
 
 
 def main():
@@ -68,10 +72,15 @@ def main():
 	else:
 		files.append(args["FILENAME"])
 
-
+	number_files = 0
+	redacted_files = 0
 	for f in files:
+		number_files += 1
 		redactor = Redactor(f)
-		redactor.redaction()
+		if redactor.redaction():
+			redacted_files += 1
+            
+	print(f"{redacted_files} of {number_files} were redacted")
 
 
 
