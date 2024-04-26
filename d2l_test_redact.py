@@ -7,7 +7,7 @@ class Redactor:
 
 	def get_redact_data(self, lines):
 	
-		STUDENT_AND_ID_REGEX = r"([\w]+ [\w]+ \(Id: [\d]+\))"
+		STUDENT_AND_ID_REGEX = r"([\w]+ [\w]+ \(Id: [\d\w]+\))"
 		for line in lines:
 		
 			# matching the regex to each line
